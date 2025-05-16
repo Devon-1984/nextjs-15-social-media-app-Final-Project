@@ -16,7 +16,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "l9yykvm61r.ufs.sh", // Replace this with your actual subdomain if different
-        pathname: "/a/l9yykvm61r/**", // Replace this with your actual UploadThing app ID
+        pathname: "/a/l9yykvm61r/**", // Replace this with your actual UploadThing app ID a
       },
     ],
   },

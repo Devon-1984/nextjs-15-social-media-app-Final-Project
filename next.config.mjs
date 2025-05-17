@@ -11,12 +11,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
-        pathname: "/a/**", // If you keep this for utfs.io /a/... support
+        pathname: "/a/**",
       },
       {
         protocol: "https",
-        hostname: "**.ufs.sh", // Wildcard to match your app CDN
-        pathname: "/f/**", // For content served via UploadThing CDN
+        hostname: "l9yykvm61r.ufs.sh",
+        pathname: "/f/**",
       },
     ],
   },

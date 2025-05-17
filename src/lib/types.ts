@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 
+// ---------- User ----------
 export function getUserDataSelect(loggedInUserId: string) {
   return {
     id: true,
@@ -29,6 +30,7 @@ export type UserData = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserDataSelect>;
 }>;
 
+// ---------- Post ----------
 export function getPostDataInclude(loggedInUserId: string) {
   return {
     user: {
@@ -69,6 +71,7 @@ export interface PostsPage {
   nextCursor: string | null;
 }
 
+// ---------- Comment ----------
 export function getCommentDataInclude(loggedInUserId: string) {
   return {
     user: {
@@ -86,6 +89,7 @@ export interface CommentsPage {
   previousCursor: string | null;
 }
 
+// ---------- Notification ----------
 export const notificationsInclude = {
   issuer: {
     select: {
@@ -110,6 +114,7 @@ export interface NotificationsPage {
   nextCursor: string | null;
 }
 
+// ---------- Misc Info Interfaces ----------
 export interface FollowerInfo {
   followers: number;
   isFollowedByUser: boolean;

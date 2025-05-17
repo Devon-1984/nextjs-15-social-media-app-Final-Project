@@ -16,7 +16,6 @@ interface PageProps {
   params: { postId: string };
 }
 
-// Cache the post query for performance
 const getPost = cache(async (postId: string, loggedInUserId: string) => {
   const post = await prisma.post.findUnique({
     where: {
@@ -26,15 +25,17 @@ const getPost = cache(async (postId: string, loggedInUserId: string) => {
   });
 
   if (!post) notFound();
+
   return post;
 });
 
-// Metadata for SEO
 export async function generateMetadata({
   params: { postId },
 }: PageProps): Promise<Metadata> {
   const { user } = await validateRequest();
+
   if (!user) return {};
+
   const post = await getPost(postId, user.id);
 
   return {
@@ -44,6 +45,7 @@ export async function generateMetadata({
 
 export default async function Page({ params: { postId } }: PageProps) {
   const { user } = await validateRequest();
+
   if (!user) {
     return (
       <p className="text-destructive">
@@ -56,12 +58,9 @@ export default async function Page({ params: { postId } }: PageProps) {
 
   return (
     <main className="flex w-full min-w-0 gap-5">
-      {/* Main post content */}
       <div className="w-full min-w-0 space-y-5">
         <Post post={post} />
       </div>
-
-      {/* Sidebar with user info */}
       <div className="sticky top-[5.25rem] hidden h-fit w-80 flex-none lg:block">
         <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
           <UserInfoSidebar user={post.user} />
@@ -77,6 +76,7 @@ interface UserInfoSidebarProps {
 
 async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
   const { user: loggedInUser } = await validateRequest();
+
   if (!loggedInUser) return null;
 
   return (
@@ -103,8 +103,6 @@ async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
           {user.bio}
         </div>
       </Linkify>
-
-      {/* Follow button */}
       {user.id !== loggedInUser.id && (
         <FollowButton
           userId={user.id}

@@ -21,17 +21,14 @@ export const fileRouter = {
       const oldAvatarUrl = metadata.user.avatarUrl;
 
       if (oldAvatarUrl) {
-        const key = oldAvatarUrl.split(
-          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-        )[1];
-
-        await new UTApi().deleteFiles(key);
+        const key = oldAvatarUrl.split("/f/")[1];
+        if (key) {
+          await new UTApi().deleteFiles(key);
+        }
       }
 
-      const newAvatarUrl = file.url.replace(
-        "/f/",
-        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-      );
+      // ✅ Don't transform the URL — just use file.url directly
+      const newAvatarUrl = file.url;
 
       await Promise.all([
         prisma.user.update({
@@ -50,6 +47,7 @@ export const fileRouter = {
 
       return { avatarUrl: newAvatarUrl };
     }),
+
   attachment: f({
     image: { maxFileSize: "4MB", maxFileCount: 5 },
     video: { maxFileSize: "64MB", maxFileCount: 5 },
@@ -62,12 +60,10 @@ export const fileRouter = {
       return {};
     })
     .onUploadComplete(async ({ file }) => {
+      // ✅ Save file.url directly
       const media = await prisma.media.create({
         data: {
-          url: file.url.replace(
-            "/f/",
-            `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-          ),
+          url: file.url,
           type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
         },
       });

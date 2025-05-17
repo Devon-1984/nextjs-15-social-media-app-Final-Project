@@ -11,12 +11,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "utfs.io",
-        pathname: "/a/**", // Matches all UploadThing assets on utfs.io
-      },
-      {
-        protocol: "https",
-        hostname: "l9yykvm61r.ufs.sh", // Replace this with your actual subdomain if different
-        pathname: "/a/l9yykvm61r/**", // Replace this with your actual UploadThing app ID a
+        pathname: `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/*`,
       },
     ],
   },
